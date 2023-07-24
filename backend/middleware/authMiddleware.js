@@ -5,23 +5,42 @@ import User from "../models/userModel.js";
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  token = req.cookies.jwt; //gets token from the cookie using the cookie parser package
-
-  if (token) {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Get token from headers
+      token = req.headers.authorization.split(" ")[1];
 
-      req.user = await User.findById(decoded.userId).select("-password"); //gets the userId from the token, not the password
+      // Decode token to get user ID
+      const userId = jwt.verify(token, process.env.JWT_SECRET);
+
+      // Fetch user from database
+      req.user = await User.findById(userId).select("-password");
 
       next();
     } catch (error) {
+      console.error(error);
       res.status(401);
-      throw new Error("Not authorized, invalid token");
+      throw new Error("Not authorized, token failed");
     }
-  } else {
+  }
+
+  if (!token) {
     res.status(401);
     throw new Error("Not authorized, no token");
   }
-}); //is there is a token? is jwt in the token? is it the right token?, if all that is true, then get the user with that token
+});
 
-export { protect };
+//Admin middleware
+const admin = (req, res, next) => {
+  if (req?.user && req?.user?.role === "admin") {
+    next();
+  } else {
+    res.status(401);
+    throw new Error("Not authorized as admin");
+  }
+};
+
+export { protect, admin };

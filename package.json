@@ -1,15 +1,18 @@
 {
-  "name": "todo",
+  "name": "mern",
   "version": "1.0.0",
-  "description": "Todo App",
+  "description": "MERN authentication system",
   "main": "index.js",
   "scripts": {
-    "server": "npm run start --prefix backend"
+    "server": "npm run start --prefix backend",
+    "client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "nodemon": "^2.0.22"
   }
 }
