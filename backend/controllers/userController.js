@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 // @desc  Auth user/set token
-//route   Post /api/users/auth
+//route   POST /api/users/auth
 //@access Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -33,7 +33,7 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 // @desc  Login with OAuth
-//route   Post /api/users/oauth
+//route   POST /api/users/oauth
 //@access Public
 const authWithOAuth = asyncHandler(async (req, res) => {
   const { account, profile } = req.body;
@@ -66,7 +66,7 @@ const authWithOAuth = asyncHandler(async (req, res) => {
 });
 
 // @desc  Register a new user
-//route   Post /api/users
+//route   POST /api/users
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
   let { name, email, password } = req.body;
@@ -78,7 +78,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   if (password) {
-    // password = await bcrypt.hash(password, 12);
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
   }
@@ -252,7 +251,6 @@ const updateUserPassword = asyncHandler(async (req, res) => {
     email: updatedUser.email,
     image: updatedUser.image,
     role: updatedUser.role,
-    // isAdmin: updatedUser.isAdmin,
   });
 });
 

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
+import todoRoutes from "./routes/todoRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
 import cors from "cors";
@@ -27,6 +28,8 @@ app.use(
 app.disable("x-powered-by");
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/todos", todoRoutes);
 
 app.get("/", (req, res) => res.send("Server is ready"));
 

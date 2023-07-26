@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "mern-todo",
   "version": "1.0.0",
-  "description": "MERN authentication backend",
+  "description": "",
   "type": "module",
   "main": "server.js",
   "scripts": {
