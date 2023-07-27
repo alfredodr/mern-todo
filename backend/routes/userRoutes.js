@@ -8,6 +8,7 @@ import {
   getUserByEmail,
   updateUserProfile,
   updateUserPassword,
+  updateEmail,
   updateUser,
   getAllUsers,
   getUserById,
@@ -40,7 +41,9 @@ router
 
 router.put("/password", protect, updateUserPassword);
 
-router.get("/email", getUserByEmail); //protected without using the middlware because it gets the email, not the user id
+router.put("/email", updateEmail); //protected without using the auth middlware because it gets the name, email, role, not just the user id
+
+router.get("/email", getUserByEmail); //protected without using the auth middlware because it gets the email, not the user id
 
 router
   .route("/:id")

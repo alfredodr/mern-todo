@@ -7,6 +7,9 @@ import { FcTodoList } from "react-icons/fc";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross1 } from "react-icons/rx";
 import { MdOutlineManageAccounts } from "react-icons/md";
+import { LuLogIn } from "react-icons/lu";
+import { MdAppRegistration } from "react-icons/md";
+import { LuLogOut } from "react-icons/lu";
 
 const Header = () => {
   const [isActive, setActive] = useState();
@@ -56,9 +59,10 @@ const Header = () => {
             <button
               type="button"
               onClick={handleSignOut}
-              className="flex flex-row items-center justify-center text-slate-400 text-lg px-2 py-1 rounded hover:bg-slate-100 focus-within:bg-slate-800 outline-none"
+              className="flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded hover:bg-slate-300 focus-within:bg-slate-800 outline-none"
             >
-              Logout
+              <span>Logout</span>
+              <LuLogOut color="#334155" size={18} className="ml-2" />
             </button>
           </div>
         ) : (
@@ -71,9 +75,10 @@ const Header = () => {
                   route === "/verify"
                     ? "hidden"
                     : ""
-                } flex flex-row items-center justify-center border border-slate-400 text-slate-400 text-lg px-2 py-1 rounded hover:border-slate-200 hover:text-slate-200 focus-within:bg-slate-800 outline-none`}
+                } flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded hover:bg-slate-300 focus-within:bg-slate-800 outline-none`}
               >
-                Login
+                <span>Login</span>
+                <LuLogIn color="#334155" size={18} className="ml-2" />
               </div>
             </Link>
             <Link href={"/register"} className="ml-2">
@@ -84,9 +89,10 @@ const Header = () => {
                   route === "/verify"
                     ? "hidden"
                     : ""
-                } flex flex-row items-center justify-center border border-slate-400 text-slate-400 text-lg px-2 py-1 rounded hover:border-slate-200 hover:text-slate-200 focus-within:bg-slate-800 outline-none`}
+                } flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded hover:bg-slate-300 focus-within:bg-slate-800 outline-none`}
               >
-                Register
+                <span>Register </span>
+                <MdAppRegistration color="#334155" size={18} className="ml-2" />
               </div>
             </Link>
           </div>
@@ -112,17 +118,10 @@ const Header = () => {
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex flex-row items-center justify-center border border-slate-400 text-slate-400 text-lg px-2 py-1 w-full rounded hover:border-slate-200 hover:text-slate-200 focus-within:bg-slate-800 outline-none"
+            className="flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 w-full rounded hover:bg-slate-300 focus-within:bg-slate-800 outline-none"
           >
-            <Image
-              src="/sign-in.svg"
-              alt="sign in"
-              className="dark:invert"
-              width={15}
-              height={10}
-              priority
-            />
-            Logout
+            <span>Logout</span>
+            <LuLogOut color="#334155" size={18} className="ml-2" />
           </button>
         </nav>
       ) : (
@@ -131,17 +130,19 @@ const Header = () => {
             <li className="py-3">
               <Link
                 href={"/login"}
-                className="ml-2 flex flex-row items-center justify-center border border-slate-400 text-slate-700 text-lg px-2 py-1 rounded"
+                className="ml-2 flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded"
               >
-                Login
+                <span>Login</span>
+                <LuLogIn color="#334155" size={18} className="ml-2" />
               </Link>
             </li>
             <li className="py-3">
               <Link
                 href={"/register"}
-                className="ml-2 flex flex-row items-center justify-center border border-slate-400 text-slate-700 text-lg px-2 py-1 rounded"
+                className="ml-2 flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded"
               >
-                Register
+                <span>Register </span>
+                <MdAppRegistration color="#334155" size={18} className="ml-2" />
               </Link>
             </li>
           </ul>

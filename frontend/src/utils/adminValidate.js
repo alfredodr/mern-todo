@@ -1,44 +1,3 @@
-// export const adminValidate = (values) => {
-//   const errors = {};
-
-//   if (!values.users) {
-//     errors.users = "No users provided";
-//   } else {
-//     values.users.forEach((user, index) => {
-//       if (!user.name) {
-//         errors.users = errors.users || [];
-//         errors.users[index] = errors.users[index] || {};
-//         errors.users[index].name = "Required";
-//       }
-
-//       if (!user.email) {
-//         errors.users = errors.users || [];
-//         errors.users[index] = errors.users[index] || {};
-//         errors.users[index].email = "Required";
-//       } else if (
-//         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(user.email)
-//       ) {
-//         errors.users = errors.users || [];
-//         errors.users[index] = errors.users[index] || {};
-//         errors.users[index].email = "Invalid email address";
-//       }
-
-//       if (
-//         user.role !== "user" &&
-//         user.role !== "admin" &&
-//         user.role !== "credentials"
-//       ) {
-//         errors.users = errors.users || [];
-//         errors.users[index] = errors.users[index] || {};
-//         errors.users[index].role =
-//           "Choose one of these roles: user, admin, or credentials";
-//       }
-//     });
-//   }
-
-//   return errors;
-// };
-
 export const adminValidate = (values) => {
   const errors = {};
 
@@ -58,6 +17,10 @@ export const adminValidate = (values) => {
     values.role !== "credentials"
   ) {
     errors.role = "Choose one of these roles: user, admin, or credentials";
+  }
+
+  if (values.actions === "Actions") {
+    errors.actions = "Please select an action";
   }
 
   return errors;

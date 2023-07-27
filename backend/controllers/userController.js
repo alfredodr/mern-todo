@@ -3,6 +3,7 @@ import { generateToken, verifyToken } from "../utils/generateToken.js";
 import User from "../models/userModel.js";
 import sendEmail from "../utils/sendEmail.js";
 import sendEmailReset from "../utils/sendEmailReset.js";
+import sendEmailUpdate from "../utils/sendEmailUpdate.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -135,6 +136,49 @@ const verifyRegisteredUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc  Update email
+//route   PUT /api/users/email
+//@access Private
+const updateEmail = asyncHandler(async (req, res) => {
+  //authenticate by getting the email from the token
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    // Get token from headers
+    token = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      res.status(401);
+      throw new Error("Not authorized, no token");
+    }
+
+    // Decode token to get user ID
+    const data = jwt.verify(token, process.env.JWT_SECRET);
+
+    const { _id, name, email, role } = data;
+
+    const user = await User.findById({ _id });
+
+    if (user) {
+      user.name = name || user.name; //if the user name has changed, update it, otherwise keep the same user name that its in the database
+      user.email = email || user.email; //if the user email has changed, update it, otherwise keep the same user email that its in the database
+      user.role = role || user.role;
+
+      const updatedUser = await user.save();
+
+      res.status(200).json({
+        updatedUser,
+      });
+    } else {
+      res.status(400);
+      throw new Error("User not found");
+    }
+  }
+});
+
 // @desc  Get user profile
 //route   GET /api/users/profile
 //@access Private
@@ -199,12 +243,34 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  user.name = name || user.name; //if the user name has changed, update it, otherwise keep the same user name that its in the database
-  user.email = email || user.email; //if the user email has changed, update it, otherwise keep the same user email that its in the database
-  user.role = role || user.role;
+  // user wants to change their email
+  if (user.email !== email) {
+    const emailExists = await User.findOne({ email });
+
+    if (emailExists) {
+      res.status(400);
+      throw new Error("Email already taken");
+    } else {
+      user.email = email; // update the email only after ensuring it's not taken
+
+      const token = generateToken({ _id, name, email, role });
+
+      await sendEmailUpdate({
+        to: email,
+        url: `${process.env.FRONTEND_URL}/email?token=${token}`,
+        text: "VERIFY EMAIL",
+      });
+
+      return res.status(201).json({
+        msg: "Update success! Please check your email to complete the update (don't forget to check spam folder too, in case you can't find the email).",
+      });
+    }
+  }
+
+  user.name = name || user.name; // if the user name has changed, update it, otherwise keep the same user name that's in the database
+  user.role = role || user.role; // same logic applies for the role
 
   const updatedUser = await user.save();
-
   res.status(200).json({
     updatedUser,
   });
@@ -296,15 +362,23 @@ const getAllUsers = asyncHandler(async (req, res) => {
 //route   DELETE /api/users/:id
 //@access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
+  const { id } = req.params;
+  const { _id } = req.user;
 
-  if (user) {
-    await User.deleteOne({ _id: user._id });
-    res.status(200).json({ message: "User removed" });
-  } else {
+  const user = await User.findById(id);
+
+  if (!user) {
     res.status(404);
     throw new Error("User not found");
   }
+
+  if (_id.equals(user._id)) {
+    res.status(400);
+    throw new Error("You cannot delete the same user you used to login");
+  }
+
+  await User.deleteOne({ _id: user._id });
+  res.status(200).json({ message: "User removed" });
 });
 
 // @desc  Get user by id
@@ -392,7 +466,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   if (user) {
     res.status(201).json({
-      msg: "Password has been reset",
+      msg: "Password has been reset, please log in",
     });
   } else {
     res.status(400);
@@ -409,6 +483,7 @@ export {
   getUserByEmail,
   updateUserProfile,
   updateUserPassword,
+  updateEmail,
   updateUser,
   getAllUsers,
   getUserById,

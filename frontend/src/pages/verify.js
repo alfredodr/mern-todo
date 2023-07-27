@@ -1,5 +1,5 @@
 import React from "react";
-import VerifyRegisteredUser from "@/components/profile/verifyRegisteredUser";
+import VerifyRegisteredUser from "@/components/profile/VerifyRegisteredUser";
 
 const verify = () => {
   return <VerifyRegisteredUser />;

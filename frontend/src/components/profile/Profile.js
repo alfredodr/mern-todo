@@ -46,10 +46,13 @@ const Profile = () => {
       const data = await res.json();
 
       if (res.ok && data) {
-        // triggering a session update, updated the value server-side.
-        // All `useSession().data` references will be updated.
-        update(data);
-        setProfileMessage("Profile Updated Successfully");
+        if (data?.msg) {
+          setProfileMessage(data?.msg);
+        } else {
+          // triggering a session update, updated the value server-side.
+          // All `useSession().data` references will be updated.
+          update(data);
+        }
       } else if (!res.ok) {
         const message = data.message;
         actions.setFieldError("updateProfileError", message);
