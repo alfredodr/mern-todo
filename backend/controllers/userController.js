@@ -6,6 +6,7 @@ import sendEmailReset from "../utils/sendEmailReset.js";
 import sendEmailUpdate from "../utils/sendEmailUpdate.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Todo from "../models/todoModel.js";
 
 // @desc  Auth user/set token
 //route   POST /api/users/auth
@@ -341,9 +342,10 @@ const getAllUsers = asyncHandler(async (req, res) => {
   //count
   const count = await User.countDocuments({ ...keyword });
 
-  const users = await User.find({})
+  const users = await User.find({ ...keyword })
     .limit(pageSize)
-    .skip(pageSize * (page - 1));
+    .skip(pageSize * (page - 1))
+    .select("-password");
 
   const pages = Math.ceil(count / pageSize);
 
@@ -351,7 +353,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   let endRange = Math.min(page * pageSize, count);
 
   if (users) {
-    res.json({ users, page, pages, startRange, endRange, count });
+    res.status(200).json({ users, page, pages, startRange, endRange, count });
   } else {
     res.status(404);
     throw new Error("Users not found");
@@ -362,8 +364,8 @@ const getAllUsers = asyncHandler(async (req, res) => {
 //route   DELETE /api/users/:id
 //@access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { _id } = req.user;
+  const { id } = req.params; //user being deleted
+  const { _id } = req.user; //user logged in
 
   const user = await User.findById(id);
 
@@ -377,12 +379,17 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error("You cannot delete the same user you used to login");
   }
 
-  await User.deleteOne({ _id: user._id });
-  res.status(200).json({ message: "User removed" });
+  await User.deleteOne({ _id: user._id }); //delete user
+
+  await Todo.deleteMany({ userId: id }); //delete all todos associated to the user
+
+  res
+    .status(200)
+    .json({ message: "User and associated todos deleted successfully" });
 });
 
 // @desc  Get user by id
-//route   DELETE /api/users/:id
+//route   GET /api/users/:id
 //@access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password"); //.select("-password") to not fetch the password

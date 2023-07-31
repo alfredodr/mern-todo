@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useFormik } from "formik";
-import updateProfileValidate from "@/utils/updateProfileValidate";
-import updatePasswordValidate from "@/utils/updatePasswordValidate";
+import { updateProfileSchema } from "@/utils/schemas";
+import { updatePasswordSchema } from "@/utils/schemas";
 import Image from "next/image";
 
 const Profile = () => {
@@ -21,7 +21,7 @@ const Profile = () => {
       email: session?.user?.email ? session?.user?.email : "",
       role: session?.user?.role ? session?.user?.role : "",
     },
-    validate: updateProfileValidate,
+    validationSchema: updateProfileSchema,
     onSubmit: async (values, actions) => {
       //update profile
       const options = {
@@ -66,7 +66,7 @@ const Profile = () => {
       newPassword: "",
       confirmNewPassword: "",
     },
-    validate: updatePasswordValidate,
+    validationSchema: updatePasswordSchema,
     onSubmit: async (values, actions) => {
       // update password
       const options = {

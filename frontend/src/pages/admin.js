@@ -47,7 +47,7 @@ export async function getServerSideProps(context) {
   );
   const data = await res.json();
 
-  const { users, page, pages, startRange, endRange, count } = data;
+  const { users, pages, startRange, endRange, count } = data;
 
   return {
     props: { users, pages, keyword, pageNumber, startRange, endRange, count },

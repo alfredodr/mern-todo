@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useFormik } from "formik";
-import { requestResetValidate } from "@/utils/requestResetValidate";
+import { requestResetSchema } from "@/utils/schemas";
 
 const RequestPasswordReset = () => {
-  const { data: session, update: sessionUpdate } = useSession();
   const [message, setMessage] = useState("");
   const formik = useFormik({
     initialValues: {
       email: "",
     },
-    validate: requestResetValidate,
+    validationSchema: requestResetSchema,
     onSubmit: async (values, actions) => {
       console.log(values);
       //update profile
@@ -33,9 +31,6 @@ const RequestPasswordReset = () => {
       const data = await res.json();
 
       if (res.ok && data) {
-        // triggering a session update, updated the value server-side.
-        // All `useSession().data` references will be updated.
-        // sessionUpdate(data);
         setMessage(data.msg);
         formik.resetForm();
       } else if (!res.ok) {

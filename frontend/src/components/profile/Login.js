@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useFormik } from "formik";
-import { loginValidate } from "@/utils/loginValidate";
+import { loginSchema } from "@/utils/schemas";
 import { useRouter } from "next/router";
 
 const Login = () => {
@@ -13,13 +13,13 @@ const Login = () => {
       email: "",
       password: "",
     },
-    validate: loginValidate,
+    validationSchema: loginSchema,
     onSubmit: async (values, actions) => {
       const status = await signIn("credentials", {
         redirect: false,
         email: values.email,
         password: values.password,
-        callbackUrl: "/profile",
+        callbackUrl: "/todos",
       });
 
       if (status.ok) router.push(status.url);
@@ -35,13 +35,13 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     signIn("google", {
-      callbackUrl: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/profile`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/todos`,
     });
   };
 
   const handleGithubSignIn = async () => {
     signIn("github", {
-      callbackUrl: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/profile`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/todos`,
     });
   };
 

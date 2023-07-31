@@ -2,13 +2,9 @@ import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema(
   {
-    taskName: {
+    task: {
       type: String,
       required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
       trim: true,
     },
     status: {

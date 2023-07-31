@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useFormik } from "formik";
-import registerValidate from "@/utils/registerValidate";
+import { userSchema } from "@/utils/schemas";
 import { useRouter } from "next/router";
 
 const Register = () => {
@@ -15,7 +15,7 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     },
-    validate: registerValidate,
+    validationSchema: userSchema,
     onSubmit: async (values, actions) => {
       //register user
       const options = {
@@ -78,7 +78,11 @@ const Register = () => {
           ) : (
             <></>
           )}
-          <form className="my-5" onSubmit={formik.handleSubmit}>
+          <form
+            className="my-5"
+            onSubmit={formik.handleSubmit}
+            autoComplete="off"
+          >
             <div className="mb-4 relative">
               <label
                 htmlFor="name"
@@ -230,7 +234,10 @@ const Register = () => {
             <div className="flex flex-col gap-5 mt-5">
               <button
                 type="submit"
-                className="bg-gradient-to-r from-blue-500 to-indigo-500 border hover:bg-white border-blue-500 text-gray-50 text-lg py-2 px-4 rounded-md"
+                disabled={formik.isSubmitting}
+                className={`bg-gradient-to-r from-blue-500 to-indigo-500 border hover:bg-white border-blue-500 text-gray-50 text-lg py-2 px-4 rounded-md ${
+                  formik.isSubmitting ? "opacity-50" : null
+                }`}
               >
                 Register
               </button>

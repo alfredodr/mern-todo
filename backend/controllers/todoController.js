@@ -7,7 +7,7 @@ import Todo from "../models/todoModel.js";
 const createTodo = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const { taskName, description, status } = req.body;
+  const { task } = req.body;
 
   const todoExists = await Todo.findById(_id);
 
@@ -17,14 +17,12 @@ const createTodo = asyncHandler(async (req, res) => {
   }
 
   const newTodo = await Todo.create({
-    taskName: taskName,
-    description: description,
-    status: status,
+    task,
     userId: _id,
   });
 
   if (newTodo) {
-    return res.status(201).json({
+    res.status(201).json({
       newTodo,
     });
   } else {
@@ -37,12 +35,39 @@ const createTodo = asyncHandler(async (req, res) => {
 //route   GET /api/todos/all
 //@access Private
 const getTodos = asyncHandler(async (req, res) => {
+  //pagination
+  const pageSize = req.query.pageSize || 5;
+  const page = Number(req.query.pageNumber) || 1;
+  const status = req.query.status;
+
+  //search
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
   const { _id } = req.user;
 
-  const todos = await Todo.find({ userId: _id });
+  const todos = await Todo.find({ userId: _id, ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  //count
+  const count = await Todo.countDocuments({ userId: _id, ...keyword });
+
+  const pages = Math.ceil(count / pageSize);
+
+  let startRange = (page - 1) * pageSize + 1;
+  let endRange = Math.min(page * pageSize, count);
 
   if (todos) {
-    return res.status(201).json(todos);
+    return res
+      .status(200)
+      .json({ todos, page, pages, startRange, endRange, count });
   } else {
     res.status(400);
     throw new Error("No todos found");
@@ -74,7 +99,7 @@ const getTodo = asyncHandler(async (req, res) => {
 //@access Private
 const updateTodo = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { taskName, description, status } = req.body;
+  const { task, status } = req.body;
 
   const todo = await Todo.findById({ _id: id });
 
@@ -83,8 +108,7 @@ const updateTodo = asyncHandler(async (req, res) => {
     throw new Error("Todo not found");
   }
 
-  todo.taskName = taskName || todo.taskName; //if the task name has changed, update it, otherwise keep the same task name that its in the database
-  todo.description = description || todo.description; //if the todo description has changed, update it, otherwise keep the same todo description that its in the database
+  todo.task = task || todo.task; //if the task name has changed, update it, otherwise keep the same task name that its in the database
   todo.status = status || todo.status;
 
   const updatedTodo = await todo.save();
@@ -99,14 +123,12 @@ const updateTodo = asyncHandler(async (req, res) => {
 //@access Private
 const deleteTodo = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  //   const { _id } = req.user;
 
-  console.log("id", id);
-
-  const todo = await Todo.findById({ _id: id });
+  const todo = await Todo.findById({ _id: id }); //find the todo
 
   if (todo) {
     await Todo.deleteOne({ _id: todo._id });
+
     res.status(200).json({ message: "Todo removed" });
   } else {
     res.status(404);
@@ -114,4 +136,22 @@ const deleteTodo = asyncHandler(async (req, res) => {
   }
 });
 
-export { createTodo, getTodos, getTodo, updateTodo, deleteTodo };
+// @desc  Delete all todos
+//route   GET /api/todos/deleteAll
+//@access Private
+const deleteAll = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+
+  const todo = await Todo.findOne({ userId: _id }); //find the todos for that user
+
+  if (todo) {
+    // delete all todo items of the user
+    await Todo.deleteMany({ userId: _id });
+    res.status(200).json({ message: "All tasks have been removed" });
+  } else {
+    res.status(404);
+    throw new Error("No task not found");
+  }
+});
+
+export { createTodo, getTodos, getTodo, updateTodo, deleteTodo, deleteAll };

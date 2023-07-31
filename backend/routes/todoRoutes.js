@@ -5,6 +5,7 @@ import {
   getTodo,
   updateTodo,
   deleteTodo,
+  deleteAll,
 } from "../controllers/todoController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -13,6 +14,8 @@ const router = express.Router();
 router.post("/create", protect, createTodo);
 
 router.get("/all", protect, getTodos);
+
+router.delete("/deleteAll", protect, deleteAll);
 
 router
   .route("/:id")

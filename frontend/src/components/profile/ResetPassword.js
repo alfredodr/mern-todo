@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useFormik } from "formik";
-import { resetPasswordValidate } from "@/utils/resetPasswordValidate";
+import { resetPasswordSchema } from "@/utils/schemas";
 
 const ResetPassword = () => {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const token = router?.query?.token;
-  //   console.log("token:", token);
   const [message, setMessage] = useState("");
 
   const formik = useFormik({
@@ -16,8 +14,8 @@ const ResetPassword = () => {
       password: "",
       confirmPassword: "",
     },
-    validate: resetPasswordValidate,
-    onSubmit: async (values, actions) => {
+    validationSchema: resetPasswordSchema,
+    onSubmit: async (values) => {
       const options = {
         method: "PUT",
         headers: {
@@ -153,19 +151,8 @@ const ResetPassword = () => {
             >
               Reset
             </button>
-            <span className="flex flex-row items-center">
-              <hr className="text-gray-500 w-1/2" />
-              <p className="text-gray-500 mx-5">or</p>
-              <hr className="text-gray-500 w-1/2" />
-            </span>
           </div>
         </form>
-        <p className="text-center text-gray-400">
-          don't have an account yet?{" "}
-          <Link href={"/register"} className="text-blue-700">
-            Register
-          </Link>
-        </p>
       </div>
     </section>
   );
