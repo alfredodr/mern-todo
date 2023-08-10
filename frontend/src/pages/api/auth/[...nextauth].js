@@ -54,12 +54,12 @@ export const authOptions = {
     },
     async session({ session, token }) {
       session.user = token.user;
-      session.jwt = jwt.sign(token.user._id, process.env.JWT_SECRET); //adding the token with user id to th session
+      session.jwt = jwt.sign(token.user._id, process.env.JWT_SECRET); //adding the token with user id to the session
       return session;
     },
     async jwt({ token, trigger, session }) {
-      if (trigger === "update") {
-        token.user = session?.updatedUser;
+      if (trigger === "update" || token.user) {
+        token.user = session?.updatedUser || token.user;
       } else {
         const user = await getUserByEmail({ email: token?.email });
         token.user = user;
@@ -67,9 +67,12 @@ export const authOptions = {
       return token;
     },
   },
-  // site: process.env.NEXT_PUBLIC_BACKEND_URL,
 };
-export default NextAuth(authOptions);
+
+const authHandler = NextAuth(authOptions);
+export default async function handler(...params) {
+  await authHandler(...params);
+}
 
 const signInWithOAuth = async ({ account, profile }) => {
   const res = await fetch(
@@ -80,15 +83,14 @@ const signInWithOAuth = async ({ account, profile }) => {
       body: JSON.stringify({ account, profile }),
     }
   );
+
   const data = await res.json();
 
-  // If no error and we have user data, return it
   if (res.ok && data) {
-    return data;
+    return true;
   }
 
-  // Return null if user data could not be retrieved
-  return null;
+  return false;
 };
 
 const getUserByEmail = async ({ email }) => {

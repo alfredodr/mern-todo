@@ -40,18 +40,6 @@ const Register = () => {
       if (res.ok && data) {
         setMessage(data.msg);
         formik.resetForm();
-        // //sign in
-        // const status = await Sign("credentials", {
-        //   redirect: false,
-        //   email: values.email,
-        //   password: values.password,
-        //   callbackUrl: "/",
-        // });
-
-        // // if (status.ok) router.push(status.url);
-        // if (status.ok) {
-        //   console.log("status:", status);
-        // }
       } else if (!res.ok) {
         const message = data.message;
         actions.setFieldError("registrationError", message);
@@ -218,16 +206,32 @@ const Register = () => {
               )}
             </div>
             <p className="text-gray-400 text-sm">
-              By clicking Register, you agree to the mern auth{" "}
-              <Link href={"/"} className="text-blue-700 hover:underline">
+              By clicking Register, you agree to the Todo Tasker{" "}
+              <Link
+                href={"/user-agreement"}
+                className="text-blue-700 hover:underline"
+              >
                 User Agreement
               </Link>
               ,{" "}
-              <Link href={"/"} className="text-blue-700 hover:underline">
+              <Link
+                href={"/privacy-policy"}
+                className="text-blue-700 hover:underline"
+              >
                 Privacy Policy
               </Link>
+              ,{" "}
+              <Link
+                href={"/terms-of-service"}
+                className="text-blue-700 hover:underline"
+              >
+                Terms of Service
+              </Link>
               , and{" "}
-              <Link href={"/"} className="text-blue-700 hover:underline">
+              <Link
+                href={"/cookie-policy"}
+                className="text-blue-700 hover:underline"
+              >
                 Cookie Policy
               </Link>
             </p>
@@ -244,7 +248,7 @@ const Register = () => {
             </div>
           </form>
           <p className="text-center text-gray-400">
-            Already on Mern Auth?{" "}
+            Already on Todo Tasker?{" "}
             <Link href={"/login"} className="text-blue-700">
               Login
             </Link>

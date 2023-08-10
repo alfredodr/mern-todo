@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Todo from "../models/todoModel.js";
 
-// @desc  Auth user/set token
+// @desc  Login with Password
 //route   POST /api/users/auth
 //@access Public
 const authUser = asyncHandler(async (req, res) => {
@@ -42,23 +42,19 @@ const authWithOAuth = asyncHandler(async (req, res) => {
 
   const userExists = await User.findOne({ email: profile.email });
 
-  //if user exists login and exit
   if (userExists) {
-    return res.status(201).json({
+    res.status(201).json({
       userExists,
     });
-  }
+  } else if (!userExists) {
+    const newUser = await User.create({
+      name: profile?.name,
+      email: profile?.email,
+      image: profile?.picture,
+      provider: account?.provider,
+    });
 
-  //if there is no user, register, and login
-  const newUser = await User.create({
-    name: profile.name,
-    email: profile.email,
-    image: profile.picture,
-    provider: account.provider,
-  });
-
-  if (newUser) {
-    return res.status(201).json({
+    res.status(201).json({
       newUser,
     });
   } else {
@@ -262,7 +258,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         text: "VERIFY EMAIL",
       });
 
-      return res.status(201).json({
+      res.status(201).json({
         msg: "Update success! Please check your email to complete the update (don't forget to check spam folder too, in case you can't find the email).",
       });
     }
@@ -277,7 +273,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc  Update user profile
+// @desc  Update user passwword
 //route   PUT /api/users/password
 //@access Private
 const updateUserPassword = asyncHandler(async (req, res) => {
@@ -426,6 +422,9 @@ const updateUser = asyncHandler(async (req, res) => {
   } //if there is no user with the id passed as a parameter in our database, we respond with a status of 404 and an error showing "User not found"
 });
 
+// @desc  Request Password Reset
+//route   PUT /api/users/request
+//@access Public
 const requestPasswordReset = asyncHandler(async (req, res) => {
   const { email } = req.body;
 

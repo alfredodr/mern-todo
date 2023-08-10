@@ -31,7 +31,7 @@ const createTodo = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc  Get all todos for a user
+// @desc  Get all todos
 //route   GET /api/todos/all
 //@access Private
 const getTodos = asyncHandler(async (req, res) => {
@@ -65,9 +65,7 @@ const getTodos = asyncHandler(async (req, res) => {
   let endRange = Math.min(page * pageSize, count);
 
   if (todos) {
-    return res
-      .status(200)
-      .json({ todos, page, pages, startRange, endRange, count });
+    res.status(200).json({ todos, page, pages, startRange, endRange, count });
   } else {
     res.status(400);
     throw new Error("No todos found");
@@ -87,7 +85,7 @@ const getTodo = asyncHandler(async (req, res) => {
   });
 
   if (todo) {
-    return res.status(201).json(todo);
+    res.status(201).json(todo);
   } else {
     res.status(400);
     throw new Error("Todo not found");
@@ -95,7 +93,7 @@ const getTodo = asyncHandler(async (req, res) => {
 });
 
 // @desc  Udpate a todo
-//route   GET /api/todos/:id
+//route   PUT /api/todos/:id
 //@access Private
 const updateTodo = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -119,7 +117,7 @@ const updateTodo = asyncHandler(async (req, res) => {
 });
 
 // @desc  Delete a todo
-//route   GET /api/todos/:id
+//route   DELETE /api/todos/:id
 //@access Private
 const deleteTodo = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -137,7 +135,7 @@ const deleteTodo = asyncHandler(async (req, res) => {
 });
 
 // @desc  Delete all todos
-//route   GET /api/todos/deleteAll
+//route   DELETE /api/todos/deleteAll
 //@access Private
 const deleteAll = asyncHandler(async (req, res) => {
   const { _id } = req.user;
