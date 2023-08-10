@@ -9,7 +9,7 @@ const privacyPolicy = () => {
           Privacy Policy for Todo Tasker
         </h1>
         <p className="mb-4">
-          <strong>Last Updated: [Date]</strong>
+          <strong>Last Updated: 8.9.23</strong>
         </p>
 
         <p className="mb-4">
@@ -30,9 +30,9 @@ const privacyPolicy = () => {
             details.
           </li>
           <li className="mb-2">
-            <strong>Social Login</strong>: If you log in using Google, Facebook,
-            or GitHub, we receive information from these platforms, such as your
-            name, profile picture, and email address.
+            <strong>Social Login</strong>: If you log in using Google or GitHub,
+            we receive information from these platforms, such as your name,
+            profile picture, and email address.
           </li>
           <li className="mb-2">
             <strong>Usage Data</strong>: We collect data about your interactions

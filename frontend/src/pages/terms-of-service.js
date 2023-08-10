@@ -30,7 +30,7 @@ const termsOfService = () => {
         </h2>
         <p className="mb-2">
           2.1 Account Creation: You can register using an email address or
-          through third-party platforms such as Google, Facebook, and Github.
+          through third-party platforms such as Google, and Github.
         </p>
         <p className="mb-4">
           2.2 Account Security: You are responsible for safeguarding your

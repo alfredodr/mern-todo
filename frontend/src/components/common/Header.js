@@ -11,7 +11,7 @@ import { LuLogIn } from "react-icons/lu";
 import { MdAppRegistration } from "react-icons/md";
 import { LuLogOut } from "react-icons/lu";
 import { RiTodoLine } from "react-icons/ri";
-import { IoMdArrowDropdown } from "react-icons/Io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import useToggleState from "@/hooks/useToggleState";
 import { CgProfile } from "react-icons/cg";
 
