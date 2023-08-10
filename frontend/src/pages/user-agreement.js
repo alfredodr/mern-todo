@@ -13,8 +13,8 @@ const userAgreement = () => {
         </p>
 
         <p className="mb-4">
-          Welcome to Todo Tasker. This User Agreement ("Agreement") governs your
-          use of our web application. Please read it carefully.
+          Welcome to Todo Tasker. This User Agreement (&ldquo;Agreement&ldquo;)
+          governs your use of our web application. Please read it carefully.
         </p>
 
         <h2 className="text-xl font-semibold mt-4 mb-2">
@@ -31,7 +31,7 @@ const userAgreement = () => {
         </h2>
         <p className="mb-2">
           2.1 Account Creation: You can register using an email address or
-          through third-party platforms such as Google and Facebook.
+          through third-party platforms such as Google and Github.
         </p>
         <p className="mb-4">
           2.2 Account Security: You are responsible for safeguarding your
