@@ -5,7 +5,7 @@ import { addTodoSchema } from "@/utils/schemas";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsTextLeft } from "react-icons/bs";
 
-const AddTodo = ({ setAllTodos }) => {
+const AddTodo = ({ setAllTodos, page, setAllPages }) => {
   const { data: session } = useSession();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -44,14 +44,16 @@ const AddTodo = ({ setAllTodos }) => {
           },
         };
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/todos/all`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/todos/all?pageNumber=${page}`,
           options
         );
         const newTodos = await res.json();
 
-        const { todos } = newTodos;
+        const { todos, pages } = newTodos;
 
         setAllTodos(todos);
+
+        setAllPages(pages);
 
         setErrorMessage(""); // clear out any previous error messages
         formikAddTodo.resetForm();

@@ -5,9 +5,9 @@ import Todos from "@/components/todos/Todos";
 
 const todos = ({
   todos,
+  pageNumber,
   pages,
   keyword,
-  pageNumber,
   startRange,
   endRange,
   count,
@@ -15,9 +15,9 @@ const todos = ({
   return (
     <Todos
       todos={todos}
+      pageNumber={pageNumber}
       pages={pages}
       keyword={keyword}
-      pageNumber={pageNumber}
       startRange={startRange}
       endRange={endRange}
       count={count}
@@ -50,6 +50,14 @@ export async function getServerSideProps(context) {
   const { todos, pages, startRange, endRange, count } = data;
 
   return {
-    props: { todos, pages, keyword, pageNumber, startRange, endRange, count },
+    props: {
+      todos,
+      pageNumber,
+      pages,
+      keyword,
+      startRange,
+      endRange,
+      count,
+    },
   };
 }

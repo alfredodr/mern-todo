@@ -49,8 +49,8 @@ const Register = () => {
 
   return (
     <>
-      <section className="flex h-screen bg-gray-100">
-        <div className="container m-auto p-5 w-10/12 md:w-10/12 lg:w-1/4 bg-slate-50 rounded-md  drop-shadow-md">
+      <section className="bg-gray-100">
+        <div className="container m-auto p-5 w-10/12 md:w-10/12 lg:w-1/4 bg-slate-50 rounded-md drop-shadow-md">
           <h1 className="text-gray-700 text-3xl text-center font-bold">
             Register
           </h1>
@@ -71,7 +71,7 @@ const Register = () => {
             onSubmit={formik.handleSubmit}
             autoComplete="off"
           >
-            <div className="mb-4 relative">
+            <div className="mb-4 ">
               <label
                 htmlFor="name"
                 className="block text-gray-600 font-semibold mb-2 text-sm"
@@ -98,7 +98,7 @@ const Register = () => {
                 <></>
               )}
             </div>
-            <div className="mb-4 relative">
+            <div className="mb-4 ">
               <label
                 htmlFor="email"
                 className="block text-gray-600 font-semibold mb-2 text-sm"
@@ -147,7 +147,7 @@ const Register = () => {
                   {...formik.getFieldProps("password")}
                 />
                 <span
-                  className={`icon text-gray-400 absolute top-1/2 right-3 transform -translate-y-1/2 ${
+                  className={`icon text-gray-400 absolute top-[49%] right-3 transform -translate-y-[49%] ${
                     show.password ? "text-blue-800" : "text-gray-400"
                   } hover:text-blue-800 cursor-pointer`}
                   onClick={() => setShow({ ...show, password: !show.password })}
@@ -185,7 +185,7 @@ const Register = () => {
                   {...formik.getFieldProps("confirmPassword")}
                 />
                 <span
-                  className={`icon text-gray-400  absolute top-1/2 right-3 transform -translate-y-1/2 ${
+                  className={`icon text-gray-400 absolute top-[63%] right-3 transform -translate-y-[63%] ${
                     show.confirmPassword ? "text-blue-800" : "text-gray-400"
                   } hover:text-blue-800 cursor-pointer`}
                   onClick={() =>

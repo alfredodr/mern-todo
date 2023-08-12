@@ -38,7 +38,6 @@ const getTodos = asyncHandler(async (req, res) => {
   //pagination
   const pageSize = req.query.pageSize || 5;
   const page = Number(req.query.pageNumber) || 1;
-  const status = req.query.status;
 
   //search
   const keyword = req.query.keyword

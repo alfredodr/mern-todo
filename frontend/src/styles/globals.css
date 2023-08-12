@@ -15,14 +15,6 @@ html {
   @apply h-full p-0 m-0 scroll-smooth;
 }
 
-/* body {
-  @apply mx-auto my-auto leading-7 overflow-x-hidden;
-} */
-
 body.dark {
   @apply bg-black;
-}
-
-main {
-  @apply min-h-screen bg-gray-100 mx-auto my-auto leading-7 overflow-x-hidden;
 }

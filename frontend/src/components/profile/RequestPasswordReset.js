@@ -41,7 +41,7 @@ const RequestPasswordReset = () => {
   });
   return (
     <>
-      <section className="flex h-screen bg-gray-100">
+      <section className="flex bg-gray-100">
         <div className="container m-auto p-5 w-10/12 md:w-10/12 lg:w-1/4 bg-slate-50 rounded-md drop-shadow-md">
           <h1 className="text-gray-700 text-3xl font-bold">Forgot password?</h1>
           <p className="text-gray-500 text-base my-2">

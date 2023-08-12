@@ -35,7 +35,7 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     signIn("google", {
-      callbackUrl: "/",
+      callbackUrl: "/todos",
     });
   };
 
@@ -47,7 +47,7 @@ const Login = () => {
 
   return (
     <>
-      <section className="flex flex-col justify-evenly h-screen bg-gray-100 px-4">
+      <section className="flex flex-col justify-evenly bg-gray-100 px-4">
         <div className="container m-auto p-5 max-w-md bg-slate-50 rounded-md drop-shadow-md">
           <h1 className="text-gray-700 text-3xl text-center font-bold my-5">
             Login

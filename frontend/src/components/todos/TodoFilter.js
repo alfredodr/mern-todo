@@ -14,7 +14,7 @@ const TodoFilter = ({ selectedStatus, setSelectedStatus, setAllTodos }) => {
   const getTextClass = (isItemSelected) => {
     return `cursor-pointer ${
       isItemSelected ? "text-blue-400" : "text-slate-950"
-    } text-lg`;
+    } text-lg p-2`;
   };
 
   const handleClearAll = async () => {
@@ -49,7 +49,7 @@ const TodoFilter = ({ selectedStatus, setSelectedStatus, setAllTodos }) => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row items-start md:items-center mx-5 md:mx-10 py-5 space-y-5 md:space-y-0 md:space-x-20">
+      <div className="flex flex-col md:flex-row items-start md:items-center md:mx-10 md:my-5 md:space-x-20 p-5 md:p-0">
         {errorMessage ? (
           <span className="text-red-700 text-sm">{errorMessage}</span>
         ) : (
@@ -60,7 +60,7 @@ const TodoFilter = ({ selectedStatus, setSelectedStatus, setAllTodos }) => {
         ) : (
           <></>
         )}
-        <div className="flex flex-row space-x-5 md:space-x-28">
+        <div className="flex flex-row justify-between items-center w-full ">
           <span
             onClick={() => handleSelection("all")}
             className={getTextClass(selectedStatus === "all")}
@@ -87,13 +87,13 @@ const TodoFilter = ({ selectedStatus, setSelectedStatus, setAllTodos }) => {
           </span>
         </div>
 
-        <div className="w-full ">
+        <div className="w-full md:w-48">
           <button
             type="submit"
             onClick={handleClearAll}
-            className="flex flex-row justify-center items-center bg-gradient-to-r from-blue-500 to-indigo-500 w-full  border border-blue-500 text-gray-50 text-lg py-2 px-4 rounded-md transition-colors"
+            className="flex flex-row justify-center items-center bg-gradient-to-r from-blue-500 to-indigo-500 w-full border border-blue-500 text-gray-50 text-lg py-2 px-4 rounded-md transition-colors"
           >
-            <AiOutlineClear color="#ffffff" size={18} className="mr-2" />
+            <AiOutlineClear color="#ffffff" size={18} className="pr-1" />
             <span>Clear All</span>
           </button>
         </div>

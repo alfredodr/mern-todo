@@ -274,8 +274,8 @@ const Admin = ({
 
   return (
     <>
-      <section className="flex justify-center items-center">
-        <div className="bg-white rounded-md drop-shadow-md mt-20">
+      <section className="flex justify-center pt-8">
+        <div className="bg-white rounded-md drop-shadow-md ">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between p-5 mb-5 border-b">
             <h1 className="text-slate-700 text-3xl font-bold mb-2 md:mb-0">
               All Users

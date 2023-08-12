@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useFormik } from "formik";
 import { editTodoSchema } from "@/utils/schemas";
 
-const EditTodoForm = ({ todo, toggleEditTodo, setAllTodos }) => {
+const EditTodoForm = ({ todo, toggleEditTodo, setAllTodos, page }) => {
   const { data: session } = useSession();
   const [todoMessage, settodoMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,7 +48,7 @@ const EditTodoForm = ({ todo, toggleEditTodo, setAllTodos }) => {
           },
         };
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/todos/all`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/todos/all?pageNumber=${page}`,
           options
         );
         const newTodos = await res.json();
@@ -91,7 +91,7 @@ const EditTodoForm = ({ todo, toggleEditTodo, setAllTodos }) => {
             id="task"
             name="task"
             value={formik.values.task}
-            className={`w-full border rounded-md p-2 bg-slate-50 focus:outline-none ${
+            className={`w-full border rounded-md mx-0 md:mx-3 p-2 bg-slate-50 focus:outline-none ${
               formik.errors.task && formik.touched.task
                 ? "border-red-700"
                 : null

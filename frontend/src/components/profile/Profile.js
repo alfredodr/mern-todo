@@ -93,7 +93,7 @@ const Profile = () => {
       if (res.ok && data) {
         // triggering a session update, updated the value server-side.
         // All `useSession().data` references will be updated.
-        // update(data); //no need to update the session because the user would need to logout and login again to user the new password
+        // update(data); //no need to update the session because the user would need to logout and login again to use the new password
         formikUpdatePassword.resetForm();
         setPasswordMessage("Password Updated Successfully");
       } else if (!res.ok) {
@@ -105,7 +105,7 @@ const Profile = () => {
 
   return (
     <>
-      <section className="flex flex-col justify-center items-center md:h-screen gap-11 md:gap-0 p-5 bg-gray-100 md:flex-row">
+      <section className="flex flex-col justify-center items-center gap-11 md:gap-0 px-5 bg-gray-100 md:flex-row">
         <div className="container mx-5 p-5 h-2/3 max-w-md bg-slate-50 rounded-md drop-shadow-md">
           <div className="flex flex-col items-center">
             <h1 className="text-gray-700 text-3xl text-center font-bold my-5">

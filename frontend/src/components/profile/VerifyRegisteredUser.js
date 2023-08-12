@@ -29,7 +29,7 @@ const VerifyRegisteredUser = () => {
   verifyRegisterdUser();
 
   return (
-    <secion className="flex flex-col justify-evenly h-screen bg-gray-100">
+    <secion className="flex flex-col justify-evenly bg-gray-100">
       <div className="container m-auto p-5 w-10/12 md:w-10/12 lg:w-1/4 bg-slate-50">
         <h1 className="text-green-800 font-bold text-center">{message}</h1>
 

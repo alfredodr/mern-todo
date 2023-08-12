@@ -50,7 +50,7 @@ const ResetPassword = () => {
   verifyRegisterdUser();
 
   return (
-    <section className="flex flex-col justify-evenly h-screen bg-gray-100">
+    <section className="flex flex-col justify-evenly bg-gray-100">
       <div className="container m-auto p-5 w-10/12 md:w-10/12 lg:w-1/4 bg-slate-50 rounded-md drop-shadow-md">
         <h1 className="text-gray-700 text-3xl text-center font-bold my-5">
           Reset Password

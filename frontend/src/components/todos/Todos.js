@@ -7,18 +7,24 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import useToggleState from "../../hooks/useToggleState";
 import EditTodoForm from "./EditTodoForm";
+// import { useRouter } from "next/router";
 
 const Todos = ({
   todos,
+  pageNumber,
   pages,
   keyword,
-  pageNumber,
   startRange,
   endRange,
   count,
 }) => {
   const [allTodos, setAllTodos] = useState(todos || []);
+  const [allPages, setAllPages] = useState(pages || 1);
+  // const [currentPage, setCurrentPage] = useState(pageNumber);
+
   const [selectedStatus, setSelectedStatus] = useState("all");
+  // const router = useRouter();
+  // const { page = 1 } = router.query;
 
   useEffect(() => {
     setAllTodos(todos || []);
@@ -54,13 +60,33 @@ const Todos = ({
       data = await res.json();
 
       if (res.ok && data) {
-        setAllTodos(allTodos.filter((tdo) => tdo._id !== todo._id));
+        //Get all todos, page, and pages
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.jwt}`,
+          },
+        };
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/todos/all?pageNumber=${pageNumber}`,
+          options
+        );
+        const newTodos = await res.json();
+
+        const { todos, pages } = newTodos;
+
+        setAllTodos(todos);
+
+        // setCurrentPage(page);
+
+        setAllPages(pages);
 
         setErrorMessage("");
       } else if (!res.ok) {
         message = data.message;
 
-        setErrorMessage(message); // set the new error message
+        setErrorMessage(message);
 
         settodoMessage("");
       }
@@ -74,6 +100,7 @@ const Todos = ({
               todo={todo}
               toggleEditTodo={setToggle}
               setAllTodos={setAllTodos}
+              page={pageNumber}
             />
           ) : (
             <>
@@ -123,20 +150,13 @@ const Todos = ({
 
   return (
     <>
-      <section className="flex justify-center items-center my-10">
-        <div className="bg-white h-max rounded-md drop-shadow-md ">
-          {/* <div className="flex flex-col md:flex-row items-start md:items-center justify-between bg-[#90CAF9] p-5 mb-5">
-            <h1 className="text-slate-700 text-3xl font-bold mb-2 md:mb-0">
-              All Todos
-            </h1>
-            <Link href={"/register"}>
-              <div className="flex flex-row items-center border border-slate-700 text-slate-700 text-lg px-2 py-1 rounded  focus-within:bg-slate-800 outline-none">
-                <AiOutlinePlus color="#334155" size={18} className="mr-2" />
-                <span>Add Todo</span>
-              </div>
-            </Link>
-          </div> */}
-          <AddTodo setAllTodos={setAllTodos} />
+      <section className="flex justify-center py-16 px-5 h-[calc(100vh-18rem)]">
+        <div className=" bg-white h-max rounded-md drop-shadow-md">
+          <AddTodo
+            setAllTodos={setAllTodos}
+            page={pageNumber}
+            setAllPages={setAllPages}
+          />
 
           {allTodos.length > 0 ? (
             <TodoFilter
@@ -155,9 +175,10 @@ const Todos = ({
                   ?.filter((todo) => todo.status === selectedStatus)
                   .map((todo, index) => <TodoForm todo={todo} key={index} />)}
           </ul>
+
           <Paginate
             page={pageNumber}
-            pages={pages}
+            pages={allPages}
             keyword={keyword ? keyword : ""}
           />
         </div>

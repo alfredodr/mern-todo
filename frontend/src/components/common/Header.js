@@ -37,7 +37,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full z-10 p-4 bg-white">
+    <header className="w-full z-10 py-4 bg-white fixed">
       {/* Desktop Menu*/}
       <nav className="container mx-auto flex items-center justify-between px-5">
         <div>
@@ -46,10 +46,10 @@ const Header = () => {
             <span className="ml-2">Todo Tasker</span>
           </Link>
         </div>
-        {/* Show Sign out if user is logged in, otherwise show Login and Register */}
+        {/* Show profile only if the user is logged in*/}
         {session ? (
-          <div className="invisible sm:visible flex flex-row items-center space-x-5">
-            {session?.user?.image !== null ? (
+          <div className="invisible md:visible flex flex-row items-center space-x-5">
+            {session ? (
               <>
                 <div className="flex flex-row items-center justify-center relative">
                   <span className="text-slate-700 text-base mr-2">
@@ -73,97 +73,87 @@ const Header = () => {
                     onClick={toggleProfileMenu}
                   />
                   {/* Profile Menu */}
-                  {session ? (
-                    <nav
-                      className={`${
-                        isProfileMenuActive === true ? null : "hidden"
-                      } absolute  ${
-                        session?.user?.role == "admin" ? "mt-56" : "mt-48"
-                      } w-52 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg z-40`}
+
+                  <nav
+                    className={`${
+                      isProfileMenuActive === true ? null : "hidden"
+                    } absolute  ${
+                      session?.user?.role == "admin" ? "mt-56" : "mt-48"
+                    } w-52 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg z-40`}
+                  >
+                    <Link
+                      href={"/profile"}
+                      className="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-200"
+                      onClick={toggleProfileMenu}
                     >
+                      <CgProfile color="#90CAF9" size={20} className="mr-2" />
+                      <span className="text-slate-700 text-base">Profile</span>
+                    </Link>
+                    <Link
+                      href={"/todos"}
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      onClick={toggleProfileMenu}
+                    >
+                      <RiTodoLine color="#90CAF9" size={20} className="mr-2" />
+                      <span className="text-slate-700 text-base">Todos</span>
+                    </Link>
+                    {session?.user?.role == "admin" ? (
                       <Link
-                        href={"/profile"}
-                        className="flex items-center px-4 py-2 text-base text-gray-700 hover:bg-gray-200"
-                      >
-                        <CgProfile color="#334155" size={20} className="mr-2" />
-                        <span className="text-slate-700 text-base">
-                          Profile
-                        </span>
-                      </Link>
-                      <Link
-                        href={"/todos"}
+                        href={"/admin"}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        onClick={toggleProfileMenu}
                       >
-                        <RiTodoLine
-                          color="#90CAF9"
-                          size={20}
+                        <MdOutlineManageAccounts
+                          color="90CAF9"
                           className="mr-2"
+                          size={20}
                         />
-                        <span className="text-slate-700 text-base">Todos</span>
+                        <span className="text-slate-700 text-base">Admin</span>
                       </Link>
-                      {session?.user?.role == "admin" ? (
-                        <Link
-                          href={"/admin"}
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        >
-                          <MdOutlineManageAccounts
-                            color="90CAF9"
-                            className="mr-2"
-                            size={20}
-                          />
-                          <span className="text-slate-700 text-base">
-                            Admin
-                          </span>
-                        </Link>
-                      ) : null}
-                      <span
-                        href={"/todos"}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
-                        onClick={handleSignOut}
-                      >
-                        <LuLogOut color="#334155" size={20} className="mr-2" />
-                        <span className="text-slate-700 text-base">Logout</span>
-                      </span>
-                    </nav>
-                  ) : (
-                    <nav
-                      className={`${
-                        isProfileMenuActive === true ? null : "hidden"
-                      } z-40 mt-4`}
+                    ) : null}
+                    <span
+                      href={"/todos"}
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
+                      onClick={handleSignOut}
                     >
-                      <ul className="flex flex-col font-semibold">
-                        <li className="py-3">
-                          <Link
-                            href={"/login"}
-                            className="ml-2 flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded"
-                          >
-                            <span>Login</span>
-                            <LuLogIn
-                              color="#334155"
-                              size={18}
-                              className="ml-2"
-                            />
-                          </Link>
-                        </li>
-                        <li className="py-3">
-                          <Link
-                            href={"/register"}
-                            className="ml-2 flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded"
-                          >
-                            <span>Register </span>
-                            <MdAppRegistration
-                              color="#334155"
-                              size={18}
-                              className="ml-2"
-                            />
-                          </Link>
-                        </li>
-                      </ul>
-                    </nav>
-                  )}
+                      <LuLogOut color="#334155" size={20} className="mr-2" />
+                      <span className="text-slate-700 text-base">Logout</span>
+                    </span>
+                  </nav>
                 </div>
               </>
-            ) : null}
+            ) : (
+              <nav
+                className={`${
+                  isProfileMenuActive === true ? null : "hidden"
+                } z-40 mt-4`}
+              >
+                <ul className="flex flex-col font-semibold">
+                  <li className="py-3">
+                    <Link
+                      href={"/login"}
+                      className="ml-2 flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded"
+                    >
+                      <span>Login</span>
+                      <LuLogIn color="#334155" size={18} className="ml-2" />
+                    </Link>
+                  </li>
+                  <li className="py-3">
+                    <Link
+                      href={"/register"}
+                      className="ml-2 flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 rounded"
+                    >
+                      <span>Register </span>
+                      <MdAppRegistration
+                        color="#334155"
+                        size={18}
+                        className="ml-2"
+                      />
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            )}
           </div>
         ) : (
           <div className="hidden space-x-7 md:flex">
@@ -217,15 +207,45 @@ const Header = () => {
         <nav
           className={`${
             isMobileMenuActive === true ? null : "hidden"
-          } z-40 mt-4`}
+          } bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg z-40 mt-4`}
         >
+          <Link
+            href={"/profile"}
+            className="flex items-center justify-center p-2 text-lg text-gray-700 hover:bg-gray-200"
+            onClick={toggleMobileMenu}
+          >
+            <CgProfile color="#90CAF9" size={20} className="mr-2" />
+            <span className="text-slate-700 text-lg">Profile</span>
+          </Link>
+          <Link
+            href={"/todos"}
+            className="flex items-center justify-center p-2 text-lg text-gray-700 hover:bg-gray-200"
+            onClick={toggleMobileMenu}
+          >
+            <RiTodoLine color="#90CAF9" size={20} className="mr-2" />
+            <span className="text-slate-700 text-lg">Todos</span>
+          </Link>
+          {session?.user?.role == "admin" ? (
+            <Link
+              href={"/admin"}
+              className="flex items-center justify-center p-2 text-lg text-gray-700 hover:bg-gray-200"
+              onClick={toggleMobileMenu}
+            >
+              <MdOutlineManageAccounts
+                color="90CAF9"
+                className="mr-2"
+                size={20}
+              />
+              <span className="text-slate-700 text-lg">Admin</span>
+            </Link>
+          ) : null}
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex flex-row items-center justify-center text-slate-700 text-lg px-2 py-1 w-full rounded hover:bg-slate-300  outline-none"
+            className="flex flex-row items-center justify-center p-2 w-full hover:bg-slate-200 outline-none"
           >
-            <span>Logout</span>
-            <LuLogOut color="#334155" size={18} className="ml-2" />
+            <LuLogOut color="#334155" size={20} className="mr-2" />
+            <span className="text-slate-700 text-lg">Logout</span>
           </button>
         </nav>
       ) : (
